@@ -21,12 +21,37 @@ router.post('/', [
     check('company').isLength({ min: 2 }),
     check('model').isLength({ min: 2 })
 ], async(req, res) => {
+    
+    // Controller
+    /* 
+        Recibe la peticion  los datos y los envia al service
+        Gestion de errores y codigos de HTTP
+    */ 
+    
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() })
     }
-
-    const car = new Car({
+    
+    res.status(201).send(result);
+    
+    // Service
+    
+    /*
+        Assert Preconditions on all data
+        Recibe como parametros de metodo 
+           - Company
+           - Model
+           - Year
+           - Sold
+           - Price
+           - Extras
+           
+       Crea un nuevo Car (buscar como implementar Factory Method)
+       Llamar al CarRepository para hacer un save
+    */
+    
+     const car = new Car({
         company: req.body.company,
         model: req.body.model,
         year: req.body.year,
@@ -36,7 +61,12 @@ router.post('/', [
     });
 
     const result = await car.save();
-    res.status(201).send(result);
+
+    // Repository
+    
+    /*
+        Recibe los datos necesaria y utilizando los metodos de mongoose persiste los datos
+    */
 })
 
 router.put('/:id', [
